@@ -38,6 +38,7 @@
         comments: '&#xe0b7;', // chat
         delete: '&#xe872;', // delete
         dotMenu: '&#xe5d4;', // more_vert
+        draggable: '&#xe25d;', // drag_handle
         edit: '&#xe3c9;', // edit
         help: '&#xe8fd;', // help_outline
         history: '&#xe889;', // history

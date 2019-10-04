@@ -1,3 +1,5 @@
+'use strict';
+
 function tbconfig () {
     const self = new TB.Module('toolbox Config');
     self.shortname = 'TBConfig'; // for backwards compatibility
@@ -625,13 +627,16 @@ function tbconfig () {
                     const removalReasonTitle = reason.title || '';
 
                     const removalReasonTemplateHTML = `
-                <tr class="removal-reason" data-reason="${index}" data-subreddit="${subreddit}">
+                <tr class="removal-reason removal-reason__sortable" draggable="true" data-reason="${index}" data-subreddit="${subreddit}">
                     <td class="removal-reasons-sort-buttons">
                         <a href="javascript:;" class="tb-sort-up tb-icons">${TBui.icons.sortUp}</a>
                         <a href="javascript:;" class="tb-sort-down tb-icons">${TBui.icons.sortDown}</a>
                     </td>
                     <td class="removal-reasons-content">
                         <span class="removal-reason-label">${removalReasonTitle}</span>
+                    </td>
+                    <td class="removal-reasons-sort-grab">
+                        <a href="javascript:;" class="tb-icons">${TBui.icons.draggable}</a>
                     </td>
                 </tr>`;
 
@@ -1164,6 +1169,34 @@ function tbconfig () {
             }
 
             $this.addClass('content-populated');
+        });
+
+        $body.on('dragstart', '.removal-reason__sortable', function(e) {
+            $(this).css('opacity', '0.4');
+            const dt = e.originalEvent.dataTransfer;
+            dt.effectAllowed = 'move';
+            dt.setData('text/html', $(this).html());
+        });
+
+        $body.on('dragover', '.removal-reason__sortable', e => {
+            const dt = e.originalEvent.dataTransfer;
+            dt.dropEffect = 'move';
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        $body.on('dragenter', '.removal-reason__sortable', e => {
+            $(this).css('background', 'red');
+            $(this).after(e.originalEvent.dataTransfer.getData('text/html'));
+        });
+
+        $body.on('dragleave', '.removal-reason__sortable', function () {
+            $(this).css('background', 'transparent');
+            $(this).next().remove();
+        });
+
+        $body.on('dragend', '.removal-reason__sortable', function () {
+            $(this).css('opacity', '1');
         });
 
         $body.on('click', '.tb-sort-up', function () {

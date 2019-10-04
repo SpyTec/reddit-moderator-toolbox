@@ -58,6 +58,21 @@ tr.removal-reason:first-of-type a.tb-sort-up {
 tr.removal-reason:last-of-type a.tb-sort-down {
     visibility: hidden;
 }
+.removal-reason__sortable [draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+.removal-reason__sortable {
+    cursor: move;
+}
+.removal-reason__sortable.over {
+    border: 2px dashed #000;
+}
 
 .mod-toolbox-rd .sort_removal_reasons ul {
     padding: 0 40px;
